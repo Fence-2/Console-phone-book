@@ -1,3 +1,4 @@
+import os
 import time
 
 phonebook = {}
@@ -10,6 +11,7 @@ def actionText():
     "Открыть" - Открытие контакта.
     "Изменить" - Изменение контакта.
     "Удалить" - Удаление контакта.
+    "Сохранить" - Сохранить все контакты в файл
 
     "Выход" - Завершение работы программы.
     '''
@@ -48,7 +50,7 @@ def showAll():
     time.sleep(1.5)
     print()
 
-def open():
+def openPerson():
     print()
 
     nameInput = input('Введите имя контакта: ')
@@ -95,7 +97,26 @@ def delete():
     time.sleep(1.5)
     print()
 
+def save():
+    to_save = ""
+    for k, v in phonebook.items():
+        to_save += f'{k}    {v}\n'
+    with open('phonebook.txt', 'w', encoding="utf-8") as file:
+        file.write(to_save)
+    print('До новых встреч!')
+    quit()
+
+def __init__():
+    if os.path.isfile('phonebook.txt'):
+        with open('phonebook.txt', encoding="utf-8") as file:
+            members = file.readlines()
+        for member in members:
+            member = member.split()
+            if member:
+                phonebook[member[0]] = member[1]        
+
 if __name__ == '__main__':
+    __init__()
     print('\nДобро пожаловать в адресную книгу!')
 
     while True:
@@ -108,7 +129,7 @@ if __name__ == '__main__':
             showAll()
             continue
         elif line == 'открыть':
-            open()
+            openPerson()
             continue
         elif line == 'изменить':
             change()
@@ -116,6 +137,8 @@ if __name__ == '__main__':
         elif line == 'удалить':
             delete()
             continue
+        elif line == 'сохранить':
+            save()
         elif line == "выход":
             print('До новых встреч!')
             break
